@@ -1,0 +1,22 @@
+{
+  "name": "rutherfordapp",
+  "version": "1.0.0",
+  "description": "TODO app using React and Cloud Fire Storage made as a part of the Rutherford & Associates hiring process",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NateGamble/TODOapp.git"
+  },
+  "author": "Nate Gamble",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NateGamble/TODOapp/issues"
+  },
+  "homepage": "https://github.com/NateGamble/TODOapp#readme",
+  "dependencies": {
+    "create-react-app": "^3.4.0"
+  }
+}
