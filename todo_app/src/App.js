@@ -4,6 +4,7 @@ import './App.css';
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 // Checked Checkbox
 import { IoMdCheckboxOutline } from "react-icons/io";
+// Database
 import firebase from './firebase.js';
 
 function App() {
@@ -28,7 +29,6 @@ class Todo extends React.Component {
 
   render() {
     return (
-      // Icon and text box need to be aligned
       <div>
         <h3>To do List:</h3>
         <TodoList items={this.state.items} />
@@ -59,6 +59,7 @@ class Todo extends React.Component {
       id: Date.now(),
       done: "no"
     };
+    // Add new items to the database
     const itemsRef = firebase.database().ref('items');
     itemsRef.push(newItem);
     this.setState(state => ({
@@ -67,6 +68,7 @@ class Todo extends React.Component {
     this.getItems();
   }
 
+  // Get tasks from the database and populate local array of items
   getItems(e) {
     const itemsRef = firebase.database().ref('items');
     itemsRef.on('value', (snapshot) => {
@@ -86,18 +88,20 @@ class Todo extends React.Component {
   }
 }
 
+// Generates different checkbox icons depending on whether task is finished or not
+// Attempted to make icons clickable using buttons
 function GenerateCheckbox(props) {
   const done = props.done;
   const id = props.id;
   if (done == "no") {
-    // return <MdCheckBoxOutlineBlank/>;
-    return <button onClick={CheckItem(id)}><MdCheckBoxOutlineBlank id="icon2"/></button>
+    return <MdCheckBoxOutlineBlank/>;
+    // return <button onClick={CheckItem(id)}><MdCheckBoxOutlineBlank id="icon2"/></button>
   }
-  // return <IoMdCheckboxOutline/>;
-  return <button onClick={CheckItem(id)}><IoMdCheckboxOutline id="icon2"/></button>
+  return <IoMdCheckboxOutline/>;
+  // return <button onClick={CheckItem(id)}><IoMdCheckboxOutline id="icon2"/></button>
 }
 
-
+// Wait for checkbox to be clicked, then switches whether task is done
 function CheckItem(id) {
   console.log("changing id:")
   console.log(id)
@@ -120,6 +124,8 @@ function CheckItem(id) {
   });
 }
 
+// Generates task text
+// Strikes through text if task is finished
 function GenerateItemText(props) {
   const done = props.done;
   const id = props.id;

@@ -28,15 +28,13 @@
   color: #61dafb;
 }
 
-/* Used to have icon-text-icon in Todo items */
+/* Used to have icons and text next to each other in Todo items */
 .wrapper {
   width: 600px;
-  /* margin: 20 auto; */
   height: 50px;
 }
 
 #text1 {
-  /* float: center; */
   align-self: baseline;
   margin-right: 10px;
   margin-left: 10px;
@@ -56,8 +54,8 @@
   color: #42889b;
   /* Makes sure the checkbox icon is centered relative to the text */
   margin-top: 4px;
-  /* margin-right: 10px; */
 }
+
 #text2 {
   margin-bottom: 5px;
   text-align: left;
