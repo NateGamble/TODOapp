@@ -1,47 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { IoIosAddCircleOutline } from "react-icons/io"
+// Empty Checkbox
+import { MdCheckBoxOutlineBlank } from "react-icons/md";
+// Checked Checkbox
+import { IoMdCheckboxOutline } from "react-icons/io";
+import firebase from './firebase.js';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <HelloMessage name="Nate" />
         <Todo />
       </header>
     </div>
   );
 }
 
-class HelloMessage extends React.Component {
-  render() {
-    return (
-      <div>
-        Hello {this.props.name}
-      </div>
-    );
-  }
-}
-
 class Todo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], text: '' };
+    this.state = { items: [], text: '', done: '' };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getItems = this.getItems.bind(this);
+    this.getItems()
   }
 
   render() {
@@ -50,17 +32,14 @@ class Todo extends React.Component {
       <div>
         <h3>To do List:</h3>
         <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <div id="icon1">
-            <IoIosAddCircleOutline />
-          </div>
-          <div id="text2">
+        <p>What's on the to do list boss?</p>
+        <form onSubmit={this.handleSubmit} id="text1">
             <input
               id="new_todo"
+              size="50"
               onChange={this.handleChange}
               value={this.state.text}
             />
-          </div>
         </form>
       </div>
     )
@@ -77,22 +56,95 @@ class Todo extends React.Component {
     }
     const newItem = {
       text: this.state.text,
-      id: Date.now()
+      id: Date.now(),
+      done: "no"
     };
+    const itemsRef = firebase.database().ref('items');
+    itemsRef.push(newItem);
     this.setState(state => ({
-      items: state.items.concat(newItem),
       text: ''
     }));
+    this.getItems();
   }
+
+  getItems(e) {
+    const itemsRef = firebase.database().ref('items');
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+        newState.push({
+          id: item,
+          text: items[item].text,
+          done: items[item].done
+        });
+      }
+      this.setState({
+        items: newState
+      });
+    });
+  }
+}
+
+function GenerateCheckbox(props) {
+  const done = props.done;
+  const id = props.id;
+  if (done == "no") {
+    // return <MdCheckBoxOutlineBlank/>;
+    return <button onClick={CheckItem(id)}><MdCheckBoxOutlineBlank id="icon2"/></button>
+  }
+  // return <IoMdCheckboxOutline/>;
+  return <button onClick={CheckItem(id)}><IoMdCheckboxOutline id="icon2"/></button>
+}
+
+
+function CheckItem(id) {
+  console.log("changing id:")
+  console.log(id)
+  
+  const itemsRef = firebase.database().ref('items');
+  itemsRef.on('value', (snapshot) => {
+    let items = snapshot.val();
+    let newState = [];
+    for (let item in items) {
+      console.log(item)
+      if (item == id) {
+        if (items[item].done == "yes") {
+          items[item].done = "no";
+        } else {
+          items[item].done = "yes";
+        }
+        break;
+      }
+    }
+  });
+}
+
+function GenerateItemText(props) {
+  const done = props.done;
+  const id = props.id;
+  const text = props.text;
+  if (done == "no") {
+    return <li key={id}>{text}</li>;
+  }
+  return <li key={id}><del>{text}</del></li>;
 }
 
 class TodoList extends React.Component {
   // TODO: format list view, allow items to be editable
   render() {
+    console.log(this.props.items);
     return (
-      <ul>
+      <ul className="list">
         {this.props.items.map(item => (
-          <li key={item.id}>{item.text}</li>
+          <div>
+            <div id="button">
+                <GenerateCheckbox done={item.done} id={item.id} />
+            </div>
+            <div id="text2">
+              <GenerateItemText id={item.id} text={item.text} done={item.done} />
+            </div>
+          </div>
         ))}
       </ul>
     );

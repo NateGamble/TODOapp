@@ -13,3 +13,10 @@ If a TODO has been completed, the checkmark can be clicked to cross out the TODO
 Completed TODOs will be separated from uncompleted TODOs
 Completed and uncompleted TODOS can be deleted by clicking the delete icon
 TODOS will be ordered by time added, with more recent TODOs at the top
+
+------------------------------
+To run:
+- Clone this git onto your machine
+- Navigate to the todo_app on your terminal
+- Run "npm start" on your terminal
+- Navigate to localhost:3000 on your browser

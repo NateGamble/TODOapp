@@ -31,21 +31,43 @@
 /* Used to have icon-text-icon in Todo items */
 .wrapper {
   width: 600px;
-  margin: 20 auto;
+  /* margin: 20 auto; */
+  height: 50px;
 }
 
-#icon1 {
+#text1 {
+  /* float: center; */
+  align-self: baseline;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 50px;
+}
+
+#button {
   float: left;
-  margin-top: 20;
-  margin-right: 100;
+  margin-right: 10px;
+  background-color: #282c3400;
+  color: #282c3400;
+  border-color: #282c3400;
 }
 
+#icon2 {
+  float: left;
+  color: #42889b;
+  /* Makes sure the checkbox icon is centered relative to the text */
+  margin-top: 4px;
+  /* margin-right: 10px; */
+}
 #text2 {
-  float: left;
+  margin-bottom: 5px;
+  text-align: left;
 }
 
-#icon3 {
-  float: right;
+/* Sets list to have no bullets, and have set width */
+.list {
+  list-style-type: none;
+  width: 400px;
+  align-content: flex-start;
 }
 
 @keyframes App-logo-spin {
